@@ -1,9 +1,16 @@
 import { Button, Flex, TextInput } from "@/components/shared";
+import useAuthController from "@/controllers/useAuthController";
+import { loadingStore } from "@/stores/page.store";
+import { useSelector } from "@tanstack/react-store";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
 
 function Login() {
-  const { control } = useForm({
+  const loadingState = useSelector(loadingStore);
+
+  const { loginService } = useAuthController();
+
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       email: "",
       password: "",
@@ -11,17 +18,20 @@ function Login() {
   });
 
   return (
-    <Flex className="flex-1 items-center justify-center bg-white">
-      <Flex className="w-100 p-5 border border-neutral-200 rounded-2xl gap-16">
+    <Flex className="flex-1 md:items-center justify-center bg-white">
+      <Flex className="md:w-100 p-3.5 md:p-5 md:border md:border-neutral-200 rounded-2xl gap-16">
         <Flex className="items-center gap-3.5">
           <h1 className="text-neutral-900">Sign In</h1>
 
-          <p className="text-body-s text-center text-neutral-500 max-w-84">
+          <p className="text-body-s text-center text-neutral-500 max-w-71 xl:max-w-84">
             Masukan email dan password yang telah terdaftar untuk masuk
           </p>
         </Flex>
 
-        <form className="flex flex-col gap-12">
+        <form
+          className="flex flex-col gap-12"
+          onSubmit={handleSubmit(loginService)}
+        >
           <Flex className="gap-6">
             <Controller
               control={control}
@@ -44,7 +54,12 @@ function Login() {
             </Flex>
           </Flex>
 
-          <Button type="submit" size="large" label="Sign In" />
+          <Button
+            type="submit"
+            size="large"
+            label="Sign In"
+            isLoading={loadingState}
+          />
         </form>
       </Flex>
     </Flex>

@@ -33,6 +33,13 @@ function Talent() {
           />
         </Flex>
 
+        <Flex className="p-3 bg-yellow-100 rounded-md mx-6 mt-2">
+          <p className="text-body-xs text-yellow-600">
+            Persentase fee disalin ke deal saat inquiry dibuat, agar riwayat
+            pembagian tidak berubah.
+          </p>
+        </Flex>
+
         <div className="grid grid-cols-3 gap-4.5 px-6 pb-6 mt-2">
           {talentData.map((item, index) => (
             <Flex
@@ -73,13 +80,6 @@ function Talent() {
             </Flex>
           ))}
         </div>
-
-        <Flex className="p-3 bg-yellow-100 rounded-md mx-6">
-          <p className="text-body-xs text-yellow-600">
-            Persentase fee disalin ke deal saat inquiry dibuat, agar riwayat
-            pembagian tidak berubah.
-          </p>
-        </Flex>
       </Flex>
     </MainContainer>
   );

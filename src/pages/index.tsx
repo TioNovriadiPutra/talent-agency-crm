@@ -1,11 +1,27 @@
 import { ListBox, TableDisplay } from "@/components/custom";
 import { Flex, MainContainer } from "@/components/shared";
+import useDealController from "@/controllers/useDealController";
 import { convertNumberToCurrency } from "@/utils/client_helper";
-import { dealBaruData, perluPerhatianData } from "@/utils/dummy_data";
+import { generateDealBaruData, perluPerhatianData } from "@/utils/dummy_data";
 import { dealBaruHeader } from "@/utils/page_data";
 import { ClipboardText, Clock, Moneys } from "iconsax-reactjs";
+import { InferGetServerSidePropsType } from "next";
 
-function Home() {
+export const getServerSideProps = async () => {
+  return {
+    props: {
+      deals: generateDealBaruData(5),
+    },
+  };
+};
+
+function Home({
+  deals,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const { useGetDealsService } = useDealController();
+
+  const { finalData } = useGetDealsService(deals);
+
   return (
     <MainContainer>
       <Flex className="flex-row! gap-4.5">
@@ -75,7 +91,7 @@ function Home() {
       <TableDisplay
         title="Deal Terbaru"
         withAction
-        data={dealBaruData}
+        data={finalData}
         dataHeader={dealBaruHeader}
       />
 

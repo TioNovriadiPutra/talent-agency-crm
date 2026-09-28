@@ -20,3 +20,8 @@ export interface ListBoxType {
   subTitle: string;
   team: string;
 }
+
+export interface DropdownType {
+  label: string;
+  value: string;
+}

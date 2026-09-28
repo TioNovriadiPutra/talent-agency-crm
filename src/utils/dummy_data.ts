@@ -1,120 +1,26 @@
 import { ListBoxType, TableType } from "@/interfaces/page.interface";
 import { convertNumberToCurrency, formatDate } from "./client_helper";
+import { DealDTO } from "@/interfaces/deal.interface";
+import { faker } from "@faker-js/faker";
+import { DealStatus } from "./enums";
 
-export const dealBaruData: TableType[] = [
-  {
-    data: [
-      {
-        type: "double",
-        value: "Serum Glow Launch|Lumi Beauty",
-      },
-      {
-        type: "text",
-        value: "Nadia Putri",
-      },
-      {
-        type: "currency",
-        value: convertNumberToCurrency(60000000),
-      },
-      {
-        type: "status",
-        value: "Produksi",
-        mode: "warning",
-      },
-      {
-        type: "date",
-        value: formatDate(new Date().toISOString()),
-      },
-    ],
-    action: {
-      type: "nav",
+export function generateDealBaruData(length: number = 10): DealDTO[] {
+  return Array.from({ length }, () => ({
+    id: faker.string.uuid(),
+    campaign_name: faker.company.catchPhrase(),
+    brand: {
+      id: faker.string.uuid(),
+      name: faker.company.name(),
     },
-  },
-  {
-    data: [
-      {
-        type: "double",
-        value: "Karsa Weekend|Kopi Karsa",
-      },
-      {
-        type: "text",
-        value: "Raka Pratama",
-      },
-      {
-        type: "currency",
-        value: convertNumberToCurrency(42000000),
-      },
-      {
-        type: "status",
-        value: "Paid",
-        mode: "success",
-      },
-      {
-        type: "date",
-        value: formatDate(new Date().toISOString()),
-      },
-    ],
-    action: {
-      type: "nav",
+    talent: {
+      id: faker.string.uuid(),
+      name: faker.person.fullName(),
     },
-  },
-  {
-    data: [
-      {
-        type: "double",
-        value: "Fall Collection|Aurelia Wear",
-      },
-      {
-        type: "text",
-        value: "Celine Marsha",
-      },
-      {
-        type: "currency",
-        value: convertNumberToCurrency(85000000),
-      },
-      {
-        type: "status",
-        value: "Quotation",
-        mode: "danger",
-      },
-      {
-        type: "date",
-        value: formatDate(new Date().toISOString()),
-      },
-    ],
-    action: {
-      type: "nav",
-    },
-  },
-  {
-    data: [
-      {
-        type: "double",
-        value: "Active Daily|Urban Fit",
-      },
-      {
-        type: "text",
-        value: "Nadia Putri",
-      },
-      {
-        type: "currency",
-        value: convertNumberToCurrency(35000000),
-      },
-      {
-        type: "status",
-        value: "Inquiry",
-        mode: "danger",
-      },
-      {
-        type: "date",
-        value: formatDate(new Date().toISOString()),
-      },
-    ],
-    action: {
-      type: "nav",
-    },
-  },
-];
+    deal_value: faker.number.int({ min: 50000000, max: 500000000 }),
+    status: faker.helpers.enumValue(DealStatus) as DealStatus,
+    taget_date: faker.date.future().toISOString(),
+  }));
+}
 
 export const perluPerhatianData: ListBoxType[] = [
   {

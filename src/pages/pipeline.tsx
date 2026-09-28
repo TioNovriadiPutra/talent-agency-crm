@@ -12,10 +12,23 @@ import { AddCircle } from "iconsax-reactjs";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { Controller, useForm } from "react-hook-form";
-import { dealBaruData } from "@/utils/dummy_data";
+import useDealController from "@/controllers/useDealController";
+import { generateDealBaruData } from "@/utils/dummy_data";
+import { InferGetServerSidePropsType } from "next";
+import { DropdownType } from "@/interfaces/page.interface";
 
-function Pipeline() {
-  const [currFilter, setCurrFilter] = useState(pipelineFilter[0]);
+export const getServerSideProps = async () => {
+  return {
+    props: {
+      deals: generateDealBaruData(),
+    },
+  };
+};
+
+function Pipeline({
+  deals,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  const [currFilter, setCurrFilter] = useState<DropdownType>(pipelineFilter[0]);
   const [buttonWidths, setButtonWidths] = useState<number[]>([]);
 
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -33,6 +46,10 @@ function Pipeline() {
       search: "",
     },
   });
+
+  const { useGetDealsService } = useDealController();
+
+  const { finalData } = useGetDealsService(deals, currFilter);
 
   useEffect(() => {
     const measure = () => {
@@ -56,7 +73,7 @@ function Pipeline() {
 
   return (
     <MainContainer>
-      <Flex className="flex-1 border border-neutral-200 rounded-lg overflow-hidden">
+      <Flex className="flex-1 border border-neutral-200 rounded-lg">
         <Flex className="flex-row! items-center justify-between p-6">
           <Flex className="gap-1.5">
             <h1 className="text-neutral-900">Pipeline Deal</h1>
@@ -110,7 +127,7 @@ function Pipeline() {
         </Flex>
 
         <Flex className="flex-1 mt-2">
-          <Table dataHeader={dealBaruHeader} data={dealBaruData} withAction />
+          <Table dataHeader={dealBaruHeader} data={finalData} withAction />
 
           <TablePagination />
         </Flex>

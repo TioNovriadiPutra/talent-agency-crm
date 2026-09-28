@@ -6,6 +6,7 @@ type Props = {
   className?: string;
   onClick?: () => void;
   ref?: Ref<HTMLButtonElement>;
+  disabled?: boolean;
 };
 
 function ButtonFlex({
@@ -14,12 +15,14 @@ function ButtonFlex({
   className,
   onClick,
   ref,
+  disabled = false,
 }: Props) {
   return (
     <button
       ref={ref}
       type={type}
-      className={`flex items-center cursor-pointer ${className}`}
+      disabled={disabled}
+      className={`flex items-center ${disabled ? "cursor-not-allowed" : "cursor-pointer"} ${className}`}
       onClick={onClick}
     >
       {children}

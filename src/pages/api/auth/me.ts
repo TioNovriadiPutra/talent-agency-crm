@@ -1,5 +1,4 @@
 import {
-  internalServerError,
   methodNotAllowedError,
   responseError,
   responseSuccess,
@@ -11,33 +10,37 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  if (req.method !== "POST") {
+  res.setHeader("Cache-Control", "private, no-store");
+
+  if (req.method !== "GET") {
     return methodNotAllowedError(res);
   }
 
-  const { email, password } = req.body;
-
   const supabase = createSupabaseClient(req, res);
 
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  const { data, error } = await supabase.auth.getUser();
 
   if (error) {
-    return responseError(res, 401, "Login gagal!|Email atau Password salah.");
+    return responseError(
+      res,
+      401,
+      "Akun tidak ditemukan!|Silahkan login terlebih dahulu.",
+    );
   }
 
-  const { data: memberships, error: membershipsError } = await supabase
+  const { data: membership, error: membershipError } = await supabase
     .from("agency_members")
     .select("agency_id, role, agency:agencies ( agency_name )")
-    .eq("user_id", data.user.id);
+    .eq("user_id", data.user.id)
+    .maybeSingle();
 
-  if (membershipsError) {
-    return internalServerError(res);
+  if (membershipError) {
+    return responseError(
+      res,
+      500,
+      "Internal server error!|Terjadi kesalahan pada sistem.",
+    );
   }
-
-  const membership = memberships?.[0];
 
   if (!membership) {
     return responseError(
@@ -50,7 +53,10 @@ export default async function handler(
   return responseSuccess(
     res,
     200,
-    "Login berhasil!|Selamat bekerja.",
-    membership,
+    "Data diambil!|Data user berhasil diambil.",
+    {
+      ...membership,
+      email: data.user.email,
+    },
   );
 }

@@ -17,3 +17,29 @@ export function formatDate(
 ): string {
   return format(parseISO(value), dateFormat, { locale: id });
 }
+
+export async function fetchAPI<T>(
+  url: string,
+  method: "GET" | "POST" | "PUT" | "DELETE",
+  body?: T,
+) {
+  try {
+    const response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw data;
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

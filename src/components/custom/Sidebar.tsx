@@ -9,18 +9,34 @@ import {
 import { ButtonFlex, Flex } from "../shared";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { useSelector } from "@tanstack/react-store";
+import { authStore } from "@/stores/page.store";
+import LogoutModal from "./LogoutModal";
+import { useState } from "react";
 
 function Sidebar() {
+  const [modal, setModal] = useState(false);
+
+  const authState = useSelector(authStore);
+
   const { pathname } = useRouter();
 
+  const openModal = () => {
+    setModal(true);
+  };
+
+  const closeModal = () => {
+    setModal(false);
+  };
+
   return (
-    <Flex className="w-65 bg-neutral-50 border-r border-r-neutral-200 gap-2">
+    <Flex className="w-65 shrink-0 bg-neutral-50 border-r border-r-neutral-200 gap-2 overflow-hidden">
       <Flex className="p-6">
         <Flex className="gap-0.5 border border-neutral-200 p-3 rounded-lg bg-white shadow-md">
           <p className="text-body-xs text-neutral-500">WORKSPACE</p>
 
           <p className="text-body-s font-medium text-neutral-900">
-            Aseek Talent Agency
+            {authState.agency_name}
           </p>
         </Flex>
       </Flex>
@@ -65,25 +81,35 @@ function Sidebar() {
 
       <Flex className="py-2.5 bg-white border-t border-t-neutral-200">
         <Flex className="flex-row! items-center px-3.5 gap-3">
-          <Flex className="flex-1 flex-row! items-center p-1.5 gap-3">
-            <Flex className="size-10 items-center justify-center rounded-lg bg-neutral-50">
+          <Flex className="min-w-0 flex-1 flex-row! items-center p-1.5 gap-3">
+            <Flex className="size-10 shrink-0 items-center justify-center rounded-lg bg-neutral-50">
               <UserSquare size={20} color="var(--neutral-500)" />
             </Flex>
 
-            <Flex className="gap-0.5">
-              <p className="text-body-s font-medium text-neutral-900">
-                John Doe
+            <Flex className="min-w-0 flex-1 gap-0.5">
+              <p
+                title={authState.email}
+                className="truncate text-body-s font-medium text-neutral-900"
+              >
+                {authState.email}
               </p>
 
-              <p className="text-body-xs text-neutral-500">Manager</p>
+              <p className="truncate text-body-xs text-neutral-500">
+                {authState.role}
+              </p>
             </Flex>
           </Flex>
 
-          <ButtonFlex className="size-8 justify-center rounded-md bg-transparent text-neutral-400 hover:bg-red-100 hover:text-red-600 transition-colors duration-300">
+          <ButtonFlex
+            className="shrink-0 size-8 justify-center rounded-md bg-transparent text-neutral-400 hover:bg-red-100 hover:text-red-600 transition-colors duration-300"
+            onClick={openModal}
+          >
             <LogoutCurve size={16} />
           </ButtonFlex>
         </Flex>
       </Flex>
+
+      <LogoutModal modalState={modal} closeModal={closeModal} />
     </Flex>
   );
 }

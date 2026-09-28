@@ -6,7 +6,7 @@ import {
   TablePagination,
 } from "@/components/shared";
 import { convertNumberToCurrency } from "@/utils/client_helper";
-import { dealBaruData, financeData } from "@/utils/dummy_data";
+import { financeData } from "@/utils/dummy_data";
 import { dealBaruHeader } from "@/utils/page_data";
 import { Controller, useForm } from "react-hook-form";
 
