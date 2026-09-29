@@ -2,47 +2,58 @@
 @import "tailwindcss";
 
 :root {
-  --primary-300: #c6c9cb;
-  --primary-400: #aaaeb1;
-  --primary-500: #8e9297;
-  --primary-600: #72777d;
-  --primary-700: #565c63;
-  --primary-800: #394149;
-  --primary-900: #1d262f;
-  --accent-100: #f1f5f9;
-  --accent-200: #e2e8f0;
-  --accent-300: #cbd5e1;
-  --accent-400: #94a3b8;
-  --accent-500: #64748b;
+  --primary-300: #b7bcb9;
+  --primary-400: #aeb4b1;
+  --primary-500: #898f8d;
+  --primary-600: #747974;
+  --primary-700: #626864;
+  --primary-800: #303431;
+  --primary-900: #181b1a;
+
+  --accent-50: #fff7ef;
+  --accent-100: #fff1e9;
+  --accent-200: #ffe4d4;
+  --accent-300: #f9d6c4;
+  --accent-400: #ffb996;
+  --accent-500: #f36b36;
+  --accent-600: #dc5d29;
+  --accent-700: #c55e2c;
+  --accent-800: #a74a26;
+  --accent-900: #8f3e20;
+
   --neutral-0: #ffffff;
-  --neutral-50: #fafafa;
-  --neutral-100: #f5f5f5;
-  --neutral-200: #e5e5e5;
-  --neutral-300: #d4d4d4;
-  --neutral-400: #a3a3a3;
-  --neutral-500: #737373;
-  --neutral-600: #525252;
-  --neutral-700: #404040;
-  --neutral-800: #262626;
-  --neutral-900: #171717;
+  --neutral-50: #fafaf8;
+  --neutral-100: #f5f5f3;
+  --neutral-200: #f1f1ee;
+  --neutral-300: #e9eae6;
+  --neutral-400: #c9cbc7;
+  --neutral-500: #929792;
+  --neutral-600: #777b78;
+  --neutral-700: #626864;
+  --neutral-800: #353a36;
+  --neutral-900: #20211f;
+
   --red-100: #fee2e2;
   --red-200: #fecaca;
   --red-300: #fca5a5;
   --red-400: #f87171;
   --red-500: #ef4444;
   --red-600: #dc2626;
+
   --yellow-100: #fef9c3;
   --yellow-200: #fef08a;
   --yellow-300: #fde047;
   --yellow-400: #facc15;
   --yellow-500: #eab308;
   --yellow-600: #ca8a04;
+
   --blue-100: #dbeafe;
   --blue-200: #bfdbfe;
   --blue-300: #7dd3fc;
   --blue-400: #60a5fa;
   --blue-500: #3b82f6;
   --blue-600: #2563eb;
+
   --green-100: #dcfce7;
   --green-200: #bbf7d0;
   --green-300: #86efac;
@@ -59,11 +70,13 @@
   --color-primary-700: var(--primary-700);
   --color-primary-800: var(--primary-800);
   --color-primary-900: var(--primary-900);
+
   --color-accent-100: var(--accent-100);
   --color-accent-200: var(--accent-200);
   --color-accent-300: var(--accent-300);
   --color-accent-400: var(--accent-400);
   --color-accent-500: var(--accent-500);
+
   --color-neutral-0: var(--neutral-0);
   --color-neutral-50: var(--neutral-50);
   --color-neutral-100: var(--neutral-100);
@@ -75,30 +88,35 @@
   --color-neutral-700: var(--neutral-700);
   --color-neutral-800: var(--neutral-800);
   --color-neutral-900: var(--neutral-900);
+
   --color-red-100: var(--red-100);
   --color-red-200: var(--red-200);
   --color-red-300: var(--red-300);
   --color-red-400: var(--red-400);
   --color-red-500: var(--red-500);
   --color-red-600: var(--red-600);
+
   --color-yellow-100: var(--yellow-100);
   --color-yellow-200: var(--yellow-200);
   --color-yellow-300: var(--yellow-300);
   --color-yellow-400: var(--yellow-400);
   --color-yellow-500: var(--yellow-500);
   --color-yellow-600: var(--yellow-600);
+
   --color-blue-100: var(--blue-100);
   --color-blue-200: var(--blue-200);
   --color-blue-300: var(--blue-300);
   --color-blue-400: var(--blue-400);
   --color-blue-500: var(--blue-500);
   --color-blue-600: var(--blue-600);
+
   --color-green-100: var(--green-100);
   --color-green-200: var(--green-200);
   --color-green-300: var(--green-300);
   --color-green-400: var(--green-400);
   --color-green-500: var(--green-500);
   --color-green-600: var(--green-600);
+
   --default-font-family: "Inter", sans-serif;
   --font-display: "Playfair", serif;
   --text-display: 36px;
@@ -135,4 +153,8 @@ h5 {
 
 input {
   @apply flex flex-1 text-body-s font-normal text-neutral-900 outline-none;
+}
+
+input::placeholder {
+  @apply text-neutral-500;
 }

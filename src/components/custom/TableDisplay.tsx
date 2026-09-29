@@ -20,7 +20,7 @@ function TableDisplay({
   isLoading,
 }: Props) {
   return (
-    <Flex className="p-6 border border-neutral-200 rounded-lg gap-6">
+    <Flex className="p-6 border border-neutral-300 bg-white rounded-lg gap-6 shadow-sm">
       <p className="text-body-m font-semibold text-neutral-900">{title}</p>
 
       <table className="border-collapse">
@@ -29,13 +29,13 @@ function TableDisplay({
             {dataHeader.map((item, index) => (
               <th
                 key={index.toString()}
-                className={`text-body-xs font-medium text-neutral-500 text-left p-4 bg-neutral-100 ${index === 0 ? "rounded-l-lg" : index === dealBaruHeader.length - 1 && !withAction ? "rounded-r-lg" : ""}`}
+                className={`text-body-xs font-medium text-neutral-500 text-left p-4 bg-neutral-200 ${index === 0 ? "rounded-l-lg" : index === dealBaruHeader.length - 1 && !withAction ? "rounded-r-lg" : ""}`}
               >
                 {item}
               </th>
             ))}
 
-            {withAction && <th className="bg-neutral-100 rounded-r-lg p-4" />}
+            {withAction && <th className="bg-neutral-200 rounded-r-lg p-4" />}
           </tr>
         </thead>
 
@@ -53,19 +53,19 @@ function TableDisplay({
             data.map((item, index) => (
               <tr
                 key={index.toString()}
-                className="hover:bg-neutral-50 transition-colors duration-300"
+                className="hover:bg-neutral-100 transition-colors duration-300"
               >
                 {item.data.map((item2, index2) => (
                   <td
                     key={index2.toString()}
-                    className="p-4 border-b border-b-neutral-200 text-body-s text-neutral-900"
+                    className="p-4 border-b border-b-neutral-300 text-body-s text-neutral-900"
                   >
                     {item2.type === "double" ? (
                       <Flex className="gap-1">
                         {item2.value.split("|").map((item3, index3) => (
                           <p
                             key={index3.toString()}
-                            className={`${index3 === 0 ? "font-bold" : "font-normal text-body-xs text-neutral-500"}`}
+                            className={`${index3 === 0 ? "font-bold" : "font-normal text-body-xs text-neutral-600"}`}
                           >
                             {item3}
                           </p>
@@ -90,9 +90,9 @@ function TableDisplay({
                 ))}
 
                 {withAction && (
-                  <td className="border-b border-b-neutral-200 p-4">
+                  <td className="border-b border-b-neutral-300 p-4">
                     <Flex className="items-center">
-                      <ButtonFlex className="size-8 justify-center border border-neutral-200 rounded-lg hover:bg-neutral-200 transition-colors duration-300">
+                      <ButtonFlex className="size-8 justify-center border border-neutral-300 rounded-lg hover:bg-neutral-300 transition-colors duration-300">
                         <ArrowRight size={16} color="var(--neutral-900)" />
                       </ButtonFlex>
                     </Flex>

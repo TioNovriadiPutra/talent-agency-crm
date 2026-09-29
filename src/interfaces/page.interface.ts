@@ -1,3 +1,5 @@
+import { PaginationType } from "./res.interface";
+
 export interface TableDataType {
   type: "text" | "currency" | "date" | "double" | "status";
   value: string;
@@ -12,6 +14,11 @@ export interface TableActionType {
 export interface TableType {
   data: TableDataType[];
   action: TableActionType;
+}
+
+export interface TablePaginationType {
+  table: TableType[];
+  pagination: PaginationType;
 }
 
 export interface ListBoxType {

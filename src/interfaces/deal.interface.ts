@@ -33,3 +33,17 @@ export interface DealAnalyticDTO {
   pipelineValue: number;
   receivables: DealAnalyticReceivableDTO;
 }
+
+export interface DealDeliverableInput {
+  content_name: string;
+  quantity: number;
+}
+
+export interface DealInput {
+  campaign_name: string;
+  brand: string;
+  talent: string;
+  gross_value: number;
+  target_date: string;
+  deliverables: DealDeliverableInput[];
+}

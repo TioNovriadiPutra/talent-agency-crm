@@ -12,17 +12,22 @@ function Talent() {
 
   return (
     <MainContainer>
-      <Flex className="flex-1 border border-neutral-200 rounded-lg overflow-hidden">
+      <Flex className="flex-1 border border-neutral-300 bg-white shadow-sm rounded-lg overflow-hidden">
         <Flex className="flex-row! items-center justify-between p-6">
           <Flex className="gap-1.5">
             <h1 className="text-neutral-900">Talent</h1>
 
-            <p className="text-body-s text-neutral-500">
+            <p className="text-body-s text-neutral-600">
               Profil talent dan persentase fee default.
             </p>
           </Flex>
 
-          <Button size="large" label="Tambah Talent" icon={AddCircle} />
+          <Button
+            size="large"
+            mode="secondary"
+            label="Tambah Talent"
+            icon={AddCircle}
+          />
         </Flex>
 
         <Flex className="flex-row! items-center justify-end px-6">
@@ -44,9 +49,9 @@ function Talent() {
           {talentData.map((item, index) => (
             <Flex
               key={index.toString()}
-              className="border border-neutral-200 rounded-lg p-6 hover:scale-105 hover:shadow-sm transition-all duration-200"
+              className="border border-neutral-300 rounded-lg p-6 hover:scale-105 hover:shadow-sm transition-all duration-200"
             >
-              <Flex className="flex-row! items-center gap-3 pb-5 border-b border-b-neutral-200 mb-3">
+              <Flex className="flex-row! items-center gap-3 pb-5 border-b border-b-neutral-300 mb-3">
                 <Flex className="size-10 items-center justify-center bg-blue-100 rounded-lg"></Flex>
 
                 <Flex className="gap-1">
@@ -54,7 +59,7 @@ function Talent() {
                     {item.title}
                   </p>
 
-                  <p className="text-body-xs text-neutral-500">
+                  <p className="text-body-xs text-neutral-600">
                     {item.subTitle}
                   </p>
                 </Flex>
@@ -62,7 +67,7 @@ function Talent() {
 
               <Flex className="flex-row! justify-between">
                 <Flex className="items-start">
-                  <p className="text-xs text-neutral-500">Deal Tercatat</p>
+                  <p className="text-xs text-neutral-600">Deal Tercatat</p>
 
                   <p className="text-body-m font-medium text-neutral-900">
                     {item.deal}
@@ -70,7 +75,7 @@ function Talent() {
                 </Flex>
 
                 <Flex className="items-start">
-                  <p className="text-xs text-neutral-500">Bagian Talent</p>
+                  <p className="text-xs text-neutral-600">Bagian Talent</p>
 
                   <p className="text-body-m font-medium text-neutral-900">
                     {item.percent}

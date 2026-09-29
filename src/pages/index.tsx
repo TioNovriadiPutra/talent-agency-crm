@@ -21,7 +21,7 @@ function Home() {
         <AnalyticSkeleton />
       ) : (
         <Flex className="flex-row! gap-4.5">
-          <Flex className="flex-row! items-center border border-neutral-200 rounded-lg h-29 flex-1 px-6 gap-6">
+          <Flex className="flex-row! items-center border border-neutral-300 rounded-lg h-29 flex-1 px-6 gap-6 bg-white shadow-sm">
             <Flex className="size-14 bg-green-100 rounded-lg items-center justify-center">
               <ClipboardText
                 size={32}
@@ -31,7 +31,7 @@ function Home() {
             </Flex>
 
             <Flex className="flex-1">
-              <p className="text-body-s font-medium text-neutral-500 mb-2">
+              <p className="text-body-s font-medium text-neutral-600 mb-2">
                 Total Deal
               </p>
 
@@ -39,7 +39,7 @@ function Home() {
                 {analyticData.totalDeals}
               </p>
 
-              <p className="text-body-xs text-neutral-500">
+              <p className="text-body-xs text-neutral-600">
                 <span className="text-green-500 font-semibold">
                   {analyticData.activeDeals}
                 </span>{" "}
@@ -48,13 +48,13 @@ function Home() {
             </Flex>
           </Flex>
 
-          <Flex className="flex-row! items-center border border-neutral-200 rounded-lg h-29 flex-1 px-6 gap-6">
+          <Flex className="flex-row! items-center border border-neutral-300 rounded-lg h-29 flex-1 px-6 gap-6 bg-white shadow-sm">
             <Flex className="size-14 bg-blue-100 rounded-lg items-center justify-center">
               <Moneys size={32} variant="Bulk" color="var(--blue-600)" />
             </Flex>
 
             <Flex className="flex-1">
-              <p className="text-body-s font-medium text-neutral-500 mb-2">
+              <p className="text-body-s font-medium text-neutral-600 mb-2">
                 Nilai Pipeline
               </p>
 
@@ -62,19 +62,19 @@ function Home() {
                 {convertNumberToCurrency(analyticData.pipelineValue)}
               </p>
 
-              <p className="text-body-xs text-neutral-500">
+              <p className="text-body-xs text-neutral-600">
                 Sebelum potongan pajak
               </p>
             </Flex>
           </Flex>
 
-          <Flex className="flex-row! items-center border border-neutral-200 rounded-lg h-29 flex-1 px-6 gap-6">
+          <Flex className="flex-row! items-center border border-neutral-300 rounded-lg h-29 flex-1 px-6 gap-6 bg-white shadow-sm">
             <Flex className="size-14 bg-red-100 rounded-lg items-center justify-center">
               <Clock size={32} variant="Bulk" color="var(--red-600)" />
             </Flex>
 
             <Flex className="flex-1">
-              <p className="text-body-s font-medium text-neutral-500 mb-2">
+              <p className="text-body-s font-medium text-neutral-600 mb-2">
                 Piutang
               </p>
 
@@ -82,7 +82,7 @@ function Home() {
                 {convertNumberToCurrency(analyticData.receivables.receivables)}
               </p>
 
-              <p className="text-body-xs text-neutral-500">
+              <p className="text-body-xs text-neutral-600">
                 <span className="text-red-500 font-semibold">
                   {analyticData.receivables.pendingInvoices}
                 </span>{" "}

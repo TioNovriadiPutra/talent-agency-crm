@@ -6,7 +6,7 @@ import "ldrs/react/Squircle.css";
 type Props = {
   type?: "submit" | "reset" | "button";
   size?: "default" | "large";
-  mode?: "default" | "outline" | "danger";
+  mode?: "default" | "outline" | "danger" | "secondary";
   label: string;
   icon?: Icon;
   isLoading?: boolean;
@@ -28,7 +28,7 @@ function Button({
     <ButtonFlex
       type={type}
       disabled={isLoading}
-      className={`justify-center px-3 ${size === "large" ? "py-2.75" : "py-1.75"} gap-2 ${mode === "outline" ? "bg-transparent border border-neutral-200 hover:bg-neutral-200" : mode === "danger" ? "bg-red-400 hover:bg-red-300" : "bg-neutral-900 hover:bg-neutral-700"} transition-colors duration-300 rounded-md`}
+      className={`justify-center px-3 ${size === "large" ? "py-2.75" : "py-1.75"} gap-2 ${mode === "outline" ? "bg-transparent border border-neutral-400 hover:bg-neutral-300" : mode === "danger" ? "bg-red-400 hover:bg-red-300" : mode === "secondary" ? "bg-accent-500 hover:bg-accent-400" : "bg-neutral-900 hover:bg-neutral-700"} transition-colors duration-300 rounded-md`}
       onClick={onClick}
     >
       {isLoading ? (
