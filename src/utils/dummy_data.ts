@@ -1,26 +1,5 @@
 import { ListBoxType, TableType } from "@/interfaces/page.interface";
 import { convertNumberToCurrency, formatDate } from "./client_helper";
-import { DealDTO } from "@/interfaces/deal.interface";
-import { faker } from "@faker-js/faker";
-import { DealStatus } from "./enums";
-
-export function generateDealBaruData(length: number = 10): DealDTO[] {
-  return Array.from({ length }, () => ({
-    id: faker.string.uuid(),
-    campaign_name: faker.company.catchPhrase(),
-    brand: {
-      id: faker.string.uuid(),
-      name: faker.company.name(),
-    },
-    talent: {
-      id: faker.string.uuid(),
-      name: faker.person.fullName(),
-    },
-    deal_value: faker.number.int({ min: 50000000, max: 500000000 }),
-    status: faker.helpers.enumValue(DealStatus) as DealStatus,
-    taget_date: faker.date.future().toISOString(),
-  }));
-}
 
 export const perluPerhatianData: ListBoxType[] = [
   {
