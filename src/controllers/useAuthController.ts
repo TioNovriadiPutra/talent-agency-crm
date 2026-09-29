@@ -18,6 +18,7 @@ function useAuthController() {
         response.data.role,
         variables.email,
         response.data.agency.agency_name,
+        response.data.agency_id,
       );
       await router.replace("/");
     },
@@ -32,6 +33,7 @@ function useAuthController() {
         response.data.role,
         response.data.email,
         response.data.agency.agency_name,
+        response.data.agency_id,
       );
     },
     onError: (error) => toastActions.showToast("failed", error.message),

@@ -1,9 +1,10 @@
 import {
+  fetchSuccess,
   methodNotAllowedError,
   responseError,
-  responseSuccess,
 } from "@/utils/server_helper";
 import { createSupabaseClient } from "@/utils/supabase";
+import { serializeCookieHeader } from "@supabase/ssr";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -50,13 +51,28 @@ export default async function handler(
     );
   }
 
-  return responseSuccess(
-    res,
-    200,
-    "Data diambil!|Data user berhasil diambil.",
+  const agencyCookie = serializeCookieHeader(
+    "active_agency_id",
+    membership.agency_id,
     {
-      ...membership,
-      email: data.user.email,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
     },
   );
+
+  const existing = res.getHeader("Set-Cookie");
+  const cookies = Array.isArray(existing)
+    ? existing
+    : existing
+      ? [String(existing)]
+      : [];
+
+  res.setHeader("Set-Cookie", [...cookies, agencyCookie]);
+
+  return fetchSuccess(res, "user", {
+    ...membership,
+    email: data.user.email,
+  });
 }

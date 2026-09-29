@@ -11,7 +11,7 @@ function AuthInitializer() {
     if (pathname !== "/login") {
       meService();
     }
-  }, [pathname]);
+  }, []);
 
   return null;
 }

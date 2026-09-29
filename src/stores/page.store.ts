@@ -37,13 +37,15 @@ export const authStore = createStore({
   role: "",
   email: "",
   agency_name: "",
+  agency_id: "",
 });
 export const authActions = {
-  setAuth(role: string, email: string, agency_name: string) {
+  setAuth(role: string, email: string, agency_name: string, agency_id: string) {
     authStore.setState(() => ({
       role,
       email,
       agency_name,
+      agency_id,
     }));
   },
   resetAuth() {
@@ -51,6 +53,7 @@ export const authActions = {
       role: "",
       email: "",
       agency_name: "",
+      agency_id: "",
     }));
   },
 };

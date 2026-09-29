@@ -2,13 +2,7 @@ import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  if (pathname === "/login" || pathname === "/api/auth/login") {
-    return NextResponse.next();
-  }
-
-  const response = NextResponse.next();
+  let response = NextResponse.next();
 
   const supabase = createServerClient(
     process.env.SUPABASE_URL!,
@@ -17,6 +11,12 @@ export async function proxy(request: NextRequest) {
       cookies: {
         getAll: () => request.cookies.getAll(),
         setAll(cookies) {
+          cookies.forEach(({ name, value }) => {
+            request.cookies.set(name, value);
+          });
+
+          response = NextResponse.next({ request });
+
           cookies.forEach(({ name, value, options }) => {
             response.cookies.set(name, value, options);
           });
@@ -25,12 +25,18 @@ export async function proxy(request: NextRequest) {
     },
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data, error } = await supabase.auth.getClaims();
 
-  if (!user) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  if (error || !data?.claims.sub) {
+    const redirect = NextResponse.redirect(new URL("/login", request.url));
+
+    response.cookies.getAll().forEach((cookie) => {
+      redirect.cookies.set(cookie);
+    });
+
+    redirect.headers.set("Cache-Control", "private, no-store");
+
+    return redirect;
   }
 
   return response;

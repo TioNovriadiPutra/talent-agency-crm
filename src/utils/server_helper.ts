@@ -41,3 +41,11 @@ export function responseSuccess(
     data: data || {},
   });
 }
+
+export function fetchSuccess(res: NextApiResponse, label: string, data: any) {
+  return res.status(200).json({
+    success: true,
+    message: `Data diambil!|Data ${label} berhasil diambil.`,
+    data,
+  });
+}

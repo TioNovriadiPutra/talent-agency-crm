@@ -12,22 +12,9 @@ import { AddCircle } from "iconsax-reactjs";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { Controller, useForm } from "react-hook-form";
-import useDealController from "@/controllers/useDealController";
-import { generateDealBaruData } from "@/utils/dummy_data";
-import { InferGetServerSidePropsType } from "next";
 import { DropdownType } from "@/interfaces/page.interface";
 
-export const getServerSideProps = async () => {
-  return {
-    props: {
-      deals: generateDealBaruData(),
-    },
-  };
-};
-
-function Pipeline({
-  deals,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+function Pipeline() {
   const [currFilter, setCurrFilter] = useState<DropdownType>(pipelineFilter[0]);
   const [buttonWidths, setButtonWidths] = useState<number[]>([]);
 
@@ -46,10 +33,6 @@ function Pipeline({
       search: "",
     },
   });
-
-  const { useGetDealsService } = useDealController();
-
-  const { finalData } = useGetDealsService(deals, currFilter);
 
   useEffect(() => {
     const measure = () => {
@@ -127,7 +110,7 @@ function Pipeline({
         </Flex>
 
         <Flex className="flex-1 mt-2">
-          <Table dataHeader={dealBaruHeader} data={finalData} withAction />
+          <Table dataHeader={dealBaruHeader} data={[]} withAction />
 
           <TablePagination />
         </Flex>
