@@ -18,12 +18,12 @@ function Login() {
   });
 
   return (
-    <Flex className="flex-1 md:items-center justify-center bg-white">
-      <Flex className="md:w-100 p-3.5 md:p-5 md:border md:border-neutral-200 rounded-2xl gap-16">
+    <Flex className="flex-1 md:items-center justify-center">
+      <Flex className="md:w-100 p-3.5 md:p-5 md:border md:border-neutral-300 bg-white shadow-sm rounded-2xl gap-16">
         <Flex className="items-center gap-3.5">
           <h1 className="text-neutral-900">Sign In</h1>
 
-          <p className="text-body-s text-center text-neutral-500 max-w-71 xl:max-w-84">
+          <p className="text-body-s text-center text-neutral-600 max-w-71 xl:max-w-84">
             Masukan email dan password yang telah terdaftar untuk masuk
           </p>
         </Flex>
@@ -48,7 +48,7 @@ function Login() {
             />
 
             <Flex className="items-end">
-              <Link href="#" className="text-body-s text-neutral-500 underline">
+              <Link href="#" className="text-body-s text-neutral-600 underline">
                 Lupa Password?
               </Link>
             </Flex>
