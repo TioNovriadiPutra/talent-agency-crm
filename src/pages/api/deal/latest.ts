@@ -21,7 +21,7 @@ export default async function handler(
   const { data, error } = await supabase
     .from("deals")
     .select(
-      "id, campaign_name, brand:brands ( brand_name ), talent:talents ( talent_name ), deal_value:deal_financials ( gross_value ), stage, target_date",
+      "id, campaign_name, brand_name, talent:talents ( talent_name ), deal_value:deal_financials ( gross_value ), stage, target_date",
     )
     .eq("agency_id", id)
     .order("created_at", {

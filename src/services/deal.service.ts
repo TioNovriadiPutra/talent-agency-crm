@@ -1,4 +1,8 @@
-import { DealAnalyticDTO, DealDTO } from "@/interfaces/deal.interface";
+import {
+  DealAnalyticDTO,
+  DealDTO,
+  DealInput,
+} from "@/interfaces/deal.interface";
 import { MetaResType, ResType } from "@/interfaces/res.interface";
 import { fetchAPI } from "@/utils/client_helper";
 
@@ -31,6 +35,22 @@ export async function getDeals(
       `/api/deal?page=${page}&search=${search}`,
       "GET",
     );
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function saveDeal(
+  body: DealInput,
+  email: string,
+): Promise<ResType> {
+  try {
+    const response = await fetchAPI("/api/deal/new", "POST", {
+      ...body,
+      email,
+    });
 
     return response;
   } catch (error) {

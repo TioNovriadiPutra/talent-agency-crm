@@ -1,15 +1,17 @@
-import { DealAnalyticDTO } from "@/interfaces/deal.interface";
+import { DealAnalyticDTO, DealInput } from "@/interfaces/deal.interface";
 import { TablePaginationType, TableType } from "@/interfaces/page.interface";
 import {
   getDealAnalytic,
   getDeals,
   getLatestDeals,
+  saveDeal,
 } from "@/services/deal.service";
-import { authStore, toastActions } from "@/stores/page.store";
+import { authStore, loadingActions, toastActions } from "@/stores/page.store";
 import { convertNumberToCurrency, formatDate } from "@/utils/client_helper";
 import { DealStatus } from "@/utils/enums";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
+import { useRouter } from "next/router";
 
 const dealStatusMode: Record<
   DealStatus,
@@ -38,13 +40,17 @@ const dealStatusMode: Record<
 };
 
 function useDealController() {
-  const agencyIdState = useSelector(authStore, (state) => state.agency_id);
+  const authState = useSelector(authStore);
+
+  const router = useRouter();
+
+  const queryClient = useQueryClient();
 
   const useGetDealAnalyticService = () => {
     const { data, isLoading, isError, error } = useQuery({
-      queryKey: ["getDealAnalytic", agencyIdState],
+      queryKey: ["getDealAnalytic", authState.agency_id],
       queryFn: () => getDealAnalytic(),
-      enabled: Boolean(agencyIdState),
+      enabled: Boolean(authState.agency_id),
     });
 
     let finalData: DealAnalyticDTO = {
@@ -73,9 +79,9 @@ function useDealController() {
 
   const useGetLatestDealsService = () => {
     const { data, isLoading, isError, error } = useQuery({
-      queryKey: ["getLatestDeals", agencyIdState],
+      queryKey: ["getLatestDeals", authState.agency_id],
       queryFn: () => getLatestDeals(),
-      enabled: Boolean(agencyIdState),
+      enabled: Boolean(authState.agency_id),
     });
 
     let finalData: TableType[] = [];
@@ -88,24 +94,28 @@ function useDealController() {
           data: [
             {
               type: "double",
-              value: `${item.campaign_name}|${item.brand.name}`,
+              value: `${item.campaign_name}|${item.brand_name}`,
             },
             {
               type: "text",
-              value: item.talent.name,
+              value: item.talent.talent_name,
             },
             {
               type: "currency",
-              value: convertNumberToCurrency(item.deal_value.gross_value),
+              value: convertNumberToCurrency(
+                item.deal_value.length == 0
+                  ? 0
+                  : item.deal_value[0].gross_value,
+              ),
             },
             {
               type: "status",
-              value: dealStatusMode[item.status].label,
-              mode: dealStatusMode[item.status].color,
+              value: dealStatusMode[item.stage].label,
+              mode: dealStatusMode[item.stage].color,
             },
             {
               type: "date",
-              value: formatDate(item.taget_date),
+              value: formatDate(item.target_date),
             },
           ],
           action: {
@@ -123,9 +133,9 @@ function useDealController() {
 
   const useGetDealsService = (page: number, search: string) => {
     const { data, isLoading, isError, error } = useQuery({
-      queryKey: ["getDeals", agencyIdState, page, search],
+      queryKey: ["getDeals", authState.agency_id, page, search],
       queryFn: () => getDeals(page, search),
-      enabled: Boolean(agencyIdState),
+      enabled: Boolean(authState.agency_id),
     });
 
     let finalData: TablePaginationType = {
@@ -147,24 +157,28 @@ function useDealController() {
             data: [
               {
                 type: "double",
-                value: `${item.campaign_name}|${item.brand.name}`,
+                value: `${item.campaign_name}|${item.brand_name}`,
               },
               {
                 type: "text",
-                value: item.talent.name,
+                value: item.talent.talent_name,
               },
               {
                 type: "currency",
-                value: convertNumberToCurrency(item.deal_value.gross_value),
+                value: convertNumberToCurrency(
+                  item.deal_value.length === 0
+                    ? 0
+                    : item.deal_value[0].gross_value,
+                ),
               },
               {
                 type: "status",
-                value: dealStatusMode[item.status].label,
-                mode: dealStatusMode[item.status].color,
+                value: dealStatusMode[item.stage].label,
+                mode: dealStatusMode[item.stage].color,
               },
               {
                 type: "date",
-                value: formatDate(item.taget_date),
+                value: formatDate(item.target_date),
               },
             ],
             action: {
@@ -182,10 +196,24 @@ function useDealController() {
     };
   };
 
+  const saveDealMutation = useMutation({
+    mutationKey: ["saveDeal"],
+    mutationFn: (body: DealInput) => saveDeal(body, authState.email),
+    onMutate: loadingActions.showLoading,
+    onSettled: loadingActions.hideLoading,
+    onSuccess: async (response) => {
+      toastActions.showToast("success", response.message);
+      await router.replace("/pipeline");
+      queryClient.invalidateQueries({ queryKey: ["getDeals"] });
+    },
+    onError: (error) => toastActions.showToast("failed", error.message),
+  });
+
   return {
     useGetDealAnalyticService,
     useGetLatestDealsService,
     useGetDealsService,
+    saveDealService: (body: any) => saveDealMutation.mutate(body),
   };
 }
 

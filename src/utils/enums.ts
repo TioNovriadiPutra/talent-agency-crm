@@ -5,3 +5,9 @@ export enum DealStatus {
   invoice = "invoice",
   paid = "paid",
 }
+
+export enum RoleEnum {
+  manager = "manager",
+  finance = "finance",
+  talent_team = "talent_team",
+}

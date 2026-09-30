@@ -32,3 +32,15 @@ export interface DropdownType {
   label: string;
   value: string;
 }
+
+export interface TalentCardType {
+  title: string;
+  subTitle: string;
+  deal: number;
+  percent: string;
+}
+
+export interface TalentTableType {
+  table: TalentCardType[];
+  pagination: PaginationType;
+}

@@ -1,18 +1,13 @@
-import { SearchNormal1 } from "iconsax-reactjs";
-import Flex from "./Flex";
-import { ControllerRenderProps } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { Flex } from "../shared";
+import { SearchNormal1 } from "iconsax-reactjs";
+import { ControllerRenderProps } from "react-hook-form";
 
 type Props = {
-  field: ControllerRenderProps<
-    {
-      search: string;
-    },
-    "search"
-  >;
+  field: ControllerRenderProps<any, any>;
 };
 
-function SearchInput({ field }: Props) {
+function ComboboxSearchInput({ field }: Props) {
   const [inputValue, setInputValue] = useState(field.value ?? "");
   const { onChange } = field;
 
@@ -25,7 +20,7 @@ function SearchInput({ field }: Props) {
   }, [inputValue, onChange]);
 
   return (
-    <Flex className="flex-row! items-center w-[320px] px-3 py-1.75 border border-neutral-400 rounded-md gap-2">
+    <Flex className="flex-row! items-center px-3 py-2.5 gap-2 border-b border-neutral-300">
       <SearchNormal1 size={18} color="var(--neutral-600)" />
 
       <input
@@ -38,4 +33,4 @@ function SearchInput({ field }: Props) {
   );
 }
 
-export default SearchInput;
+export default ComboboxSearchInput;

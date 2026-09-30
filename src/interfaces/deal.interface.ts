@@ -1,11 +1,7 @@
 import { DealStatus } from "@/utils/enums";
 
-export interface DealBrandDTO {
-  name: string;
-}
-
 export interface DealTalentDTO {
-  name: string;
+  talent_name: string;
 }
 
 export interface DealValueDTO {
@@ -15,11 +11,11 @@ export interface DealValueDTO {
 export interface DealDTO {
   id: string;
   campaign_name: string;
-  brand: DealBrandDTO;
+  brand_name: string;
   talent: DealTalentDTO;
-  deal_value: DealValueDTO;
-  status: DealStatus;
-  taget_date: string;
+  deal_value: DealValueDTO[];
+  stage: DealStatus;
+  target_date: string;
 }
 
 export interface DealAnalyticReceivableDTO {

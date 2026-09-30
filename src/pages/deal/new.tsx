@@ -9,12 +9,18 @@ import {
   QuantityInput,
   TextInput,
 } from "@/components/shared";
+import useDealController from "@/controllers/useDealController";
+import useTalentController from "@/controllers/useTalentController";
 import { DealInput } from "@/interfaces/deal.interface";
+import { loadingStore } from "@/stores/page.store";
+import { useSelector } from "@tanstack/react-store";
 import { AddCircle, ArrowLeft2, Trash } from "iconsax-reactjs";
 import { useRouter } from "next/router";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm, useWatch } from "react-hook-form";
 
 function NewDeal() {
+  const loadingState = useSelector(loadingStore);
+
   const router = useRouter();
 
   const { control, handleSubmit } = useForm<DealInput>({
@@ -39,10 +45,21 @@ function NewDeal() {
     },
   });
 
+  const talentSearchInput = useWatch({
+    control: searchControl,
+    name: "talentSearch",
+  });
+
   const { fields, append, remove } = useFieldArray({
     control: control,
     name: "deliverables",
   });
+
+  const { useGetTalentsDropdownService } = useTalentController();
+  const { saveDealService } = useDealController();
+
+  const { finalData, isLoading } =
+    useGetTalentsDropdownService(talentSearchInput);
 
   return (
     <MainContainer>
@@ -62,7 +79,8 @@ function NewDeal() {
           label="Simpan Inquiry"
           mode="secondary"
           size="large"
-          onClick={handleSubmit((data) => console.log(data))}
+          isLoading={loadingState}
+          onClick={handleSubmit(saveDealService)}
         />
       </Flex>
 
@@ -106,9 +124,10 @@ function NewDeal() {
                 field={field}
                 label="Talent"
                 required
-                dropdownData={[]}
+                dropdownData={finalData}
                 searchControl={searchControl}
                 error={error}
+                isLoading={isLoading}
               />
             )}
           />

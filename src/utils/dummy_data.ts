@@ -1,4 +1,8 @@
-import { ListBoxType, TableType } from "@/interfaces/page.interface";
+import {
+  ListBoxType,
+  TableType,
+  TalentCardType,
+} from "@/interfaces/page.interface";
 import { convertNumberToCurrency, formatDate } from "./client_helper";
 
 export const perluPerhatianData: ListBoxType[] = [
@@ -22,7 +26,7 @@ export const perluPerhatianData: ListBoxType[] = [
   },
 ];
 
-export const talentData = [
+export const talentData: TalentCardType[] = [
   {
     title: "Nadia Putri",
     subTitle: "@nadiaputri",

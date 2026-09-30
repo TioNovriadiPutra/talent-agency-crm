@@ -12,3 +12,4 @@ export { default as CurrencyInput } from "./CurrencyInput";
 export { default as DateInput } from "./DateInput";
 export { default as ComboboxInput } from "./ComboboxInput";
 export { default as QuantityInput } from "./QuantityInput";
+export { default as PercentInput } from "./PercentInput";

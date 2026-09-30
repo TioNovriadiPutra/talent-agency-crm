@@ -4,7 +4,10 @@ import ButtonFlex from "./ButtonFlex";
 import { DropdownType } from "@/interfaces/page.interface";
 import { useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Box, SearchNormal1 } from "iconsax-reactjs";
+import { Box } from "iconsax-reactjs";
+import { Squircle } from "ldrs/react";
+import "ldrs/react/Squircle.css";
+import { ComboboxSearchInput } from "../custom";
 
 type Props = {
   field: ControllerRenderProps<any, any>;
@@ -13,6 +16,7 @@ type Props = {
   error?: FieldError;
   dropdownData: DropdownType[];
   searchControl: any;
+  isLoading?: boolean;
 };
 
 function ComboboxInput({
@@ -22,6 +26,7 @@ function ComboboxInput({
   error,
   dropdownData,
   searchControl,
+  isLoading,
 }: Props) {
   const [openDropdown, setOpenDropdown] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -31,6 +36,7 @@ function ComboboxInput({
   useLayoutEffect(() => {
     const trigger = triggerRef.current;
     const dropdown = dropdownRef.current;
+
     if (!openDropdown || !trigger || !dropdown) return;
 
     function positionDropdown() {
@@ -73,6 +79,7 @@ function ComboboxInput({
     }
 
     positionDropdown();
+
     const observer = new ResizeObserver(positionDropdown);
     observer.observe(trigger);
     observer.observe(dropdown);
@@ -136,16 +143,23 @@ function ComboboxInput({
               control={searchControl}
               name={`${field.name}Search`}
               render={({ field: searchField }) => (
-                <Flex className="flex-row! items-center px-3 py-2.5 gap-2 border-b border-neutral-300">
-                  <SearchNormal1 size={18} color="var(--neutral-600)" />
-
-                  <input {...searchField} placeholder="Cari disini..." />
-                </Flex>
+                <ComboboxSearchInput field={searchField} />
               )}
             />
 
             <Flex className="p-1.25">
-              {dropdownData.length === 0 && (
+              {isLoading ? (
+                <Flex className="items-center px-3 py-6">
+                  <Squircle
+                    size="24"
+                    stroke="4"
+                    strokeLength="0.15"
+                    bgOpacity="0.1"
+                    speed="0.9"
+                    color={"var(--neutral-900)"}
+                  />
+                </Flex>
+              ) : dropdownData.length === 0 ? (
                 <div
                   role="status"
                   className="flex flex-col items-center gap-2 px-3 py-6 text-center"
@@ -155,16 +169,20 @@ function ComboboxInput({
                     Tidak ada pilihan tersedia
                   </p>
                 </div>
+              ) : (
+                dropdownData.map((item, index) => (
+                  <ButtonFlex
+                    key={index.toString()}
+                    className="p-2 rounded-md hover:bg-neutral-300 transition-colors duration-300"
+                    onClick={() => {
+                      field.onChange(item.value);
+                      setOpenDropdown(false);
+                    }}
+                  >
+                    <p className="text-body-s text-neutral-900">{item.label}</p>
+                  </ButtonFlex>
+                ))
               )}
-
-              {dropdownData.map((item, index) => (
-                <ButtonFlex
-                  key={index.toString()}
-                  className="p-2 rounded-md hover:bg-neutral-300 transition-colors duration-300"
-                >
-                  <p className="text-body-s text-neutral-900">{item.label}</p>
-                </ButtonFlex>
-              ))}
             </Flex>
           </motion.div>
         )}

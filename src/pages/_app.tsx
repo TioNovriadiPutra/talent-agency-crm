@@ -3,6 +3,7 @@ import {
   Container,
   Header,
   Sidebar,
+  TalentFormModal,
   Toast,
 } from "@/components/custom";
 import { Flex } from "@/components/shared";
@@ -44,6 +45,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
           <Toast />
         </Flex>
+
+        <TalentFormModal />
       </QueryClientProvider>
     </Container>
   );

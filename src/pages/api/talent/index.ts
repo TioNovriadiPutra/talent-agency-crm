@@ -21,7 +21,7 @@ export default async function handler(
 
   const currPage = Number(page ?? 1);
   const pageSize = 10;
-  const currSearch = typeof search === "string" ? search : "";
+  const currSearch = typeof search === "string" ? search.trim() : "";
 
   if (!Number.isInteger(currPage) || currPage < 1) {
     return responseError(
@@ -36,26 +36,34 @@ export default async function handler(
   const supabase = createSupabaseClient(req, res);
 
   let query = supabase
-    .from("deals")
+    .from("talents")
     .select(
-      "id, campaign_name, brand_name, talent:talents ( talent_name ), deal_value:deal_financials ( gross_value ), stage, target_date",
-      { count: "exact" },
+      "id, talent_name, social_handle, default_share_pct, recorded_deals:deals(count)",
+      {
+        count: "exact",
+      },
     )
     .eq("agency_id", id);
 
   if (currSearch) {
-    query = query.ilike("campaign_name", `%${currSearch}%`);
+    const pattern = `"${`%${currSearch}%`
+      .replace(/\\/g, "\\\\")
+      .replace(/"/g, '\\"')}"`;
+
+    query = query.or(
+      `talent_name.ilike.${pattern},social_handle.ilike.${pattern}`,
+    );
   }
 
   const { data, error, count } = await query
-    .order("created_at", { ascending: false })
+    .order("talent_name")
     .range(from, from + pageSize - 1);
 
   if (error) {
     return internalServerError(res);
   }
 
-  return fetchSuccess(res, "deal", {
+  return fetchSuccess(res, "talent", {
     items: data ?? [],
     pagination: {
       page,

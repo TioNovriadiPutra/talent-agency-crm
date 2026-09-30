@@ -1,6 +1,17 @@
+export interface TalentRecordedDealsDTO {
+  count: number;
+}
+
 export interface TalentDTO {
   id: string;
-  name: string;
+  talent_name: string;
+  social_handle: string;
   default_share_pct: number;
-  ongoing_deal: number;
+  recorded_deals: TalentRecordedDealsDTO[];
+}
+
+export interface TalentInput {
+  talent_name: string;
+  social_handle: string;
+  default_share_pct: string;
 }
