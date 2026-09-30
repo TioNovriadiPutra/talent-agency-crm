@@ -43,3 +43,17 @@ export interface DealInput {
   target_date: string;
   deliverables: DealDeliverableInput[];
 }
+
+export interface DealDetailSOWDTO {
+  content_name: string;
+  quantity: number;
+}
+
+export interface DealDetailDTO {
+  id: string;
+  stage: DealStatus;
+  talent: DealTalentDTO;
+  deal_value: DealValueDTO[];
+  target_date: string;
+  sow: DealDetailSOWDTO[];
+}

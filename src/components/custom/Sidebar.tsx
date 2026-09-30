@@ -1,11 +1,4 @@
-import {
-  ClipboardText,
-  Element4,
-  LogoutCurve,
-  Moneys,
-  Star1,
-  UserSquare,
-} from "iconsax-reactjs";
+import { LogoutCurve, UserSquare } from "iconsax-reactjs";
 import { ButtonFlex, Flex } from "../shared";
 import { useRouter } from "next/router";
 import Link from "next/link";

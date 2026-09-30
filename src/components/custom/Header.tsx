@@ -1,7 +1,8 @@
 import { useRouter } from "next/router";
 import { Flex } from "../shared";
+import { ParsedUrlQuery } from "querystring";
 
-function extractPageName(pathname: string) {
+function extractPageName(pathname: string, query: ParsedUrlQuery) {
   const breadcrumb = [];
 
   if (pathname === "/") breadcrumb.push("Dashboard");
@@ -14,15 +15,21 @@ function extractPageName(pathname: string) {
     if (pathname.includes("/new")) {
       breadcrumb.push("Inquiry Baru");
     }
+
+    if (query.name) {
+      breadcrumb.push(query.name);
+    }
   }
+
+  console.log(query);
 
   return breadcrumb;
 }
 
 function Header() {
-  const { pathname } = useRouter();
+  const { pathname, query } = useRouter();
 
-  const breadcrumbs = extractPageName(pathname);
+  const breadcrumbs = extractPageName(pathname, query);
 
   return (
     <Flex className="flex-row! items-center py-[21.5px] px-6 border-b border-b-neutral-300 gap-2 bg-white">

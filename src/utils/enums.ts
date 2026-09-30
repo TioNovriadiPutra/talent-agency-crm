@@ -4,6 +4,8 @@ export enum DealStatus {
   production = "production",
   invoice = "invoice",
   paid = "paid",
+  payout = "payout",
+  cancelled = "cancelled",
 }
 
 export enum RoleEnum {

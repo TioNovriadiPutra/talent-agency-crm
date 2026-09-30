@@ -1,7 +1,12 @@
-import { DealAnalyticDTO, DealInput } from "@/interfaces/deal.interface";
+import {
+  DealAnalyticDTO,
+  DealDetailDTO,
+  DealInput,
+} from "@/interfaces/deal.interface";
 import { TablePaginationType, TableType } from "@/interfaces/page.interface";
 import {
   getDealAnalytic,
+  getDealDetail,
   getDeals,
   getLatestDeals,
   saveDeal,
@@ -31,11 +36,19 @@ const dealStatusMode: Record<
   },
   [DealStatus.invoice]: {
     label: "Invoice",
-    color: "warning",
+    color: "danger",
   },
   [DealStatus.paid]: {
     label: "Paid",
     color: "success",
+  },
+  [DealStatus.payout]: {
+    label: "Payout",
+    color: "success",
+  },
+  [DealStatus.cancelled]: {
+    label: "Cancelled",
+    color: "danger",
   },
 };
 
@@ -120,6 +133,10 @@ function useDealController() {
           ],
           action: {
             type: "nav",
+            onClick: () =>
+              router.push(
+                `/deal/${item.id}?name=${item.campaign_name}&brand=${item.brand_name}`,
+              ),
           },
         }));
       }
@@ -183,6 +200,10 @@ function useDealController() {
             ],
             action: {
               type: "nav",
+              onClick: () =>
+                router.push(
+                  `/deal/${item.id}?name=${item.campaign_name}&brand=${item.brand_name}`,
+                ),
             },
           })),
           pagination: data.data.pagination,
@@ -209,11 +230,43 @@ function useDealController() {
     onError: (error) => toastActions.showToast("failed", error.message),
   });
 
+  const useGetDealDetailService = (id: string) => {
+    const { data, isLoading, isError, error } = useQuery({
+      queryKey: ["getDealDetail", id],
+      queryFn: () => getDealDetail(id),
+    });
+
+    let finalData: DealDetailDTO = {
+      id: "-",
+      stage: DealStatus["inquiry"],
+      talent: {
+        talent_name: "-",
+      },
+      deal_value: [],
+      target_date: "-",
+      sow: [],
+    };
+
+    if (!isLoading) {
+      if (isError) {
+        toastActions.showToast("failed", error.message);
+      } else if (data) {
+        finalData = data.data;
+      }
+    }
+
+    return {
+      finalData,
+      isLoading,
+    };
+  };
+
   return {
     useGetDealAnalyticService,
     useGetLatestDealsService,
     useGetDealsService,
     saveDealService: (body: any) => saveDealMutation.mutate(body),
+    useGetDealDetailService,
   };
 }
 

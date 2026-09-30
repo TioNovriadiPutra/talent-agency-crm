@@ -31,6 +31,40 @@ export const sidebarMenu = [
   },
 ];
 
+export const deliverableHeader = [
+  "Nama Content",
+  "Jumlah",
+  "Platform",
+  "Tipe Content",
+];
+
+export const stageData = [
+  {
+    label: "Inquiry",
+    value: "inquiry",
+  },
+  {
+    label: "Quotation",
+    value: "quotation",
+  },
+  {
+    label: "Produksi",
+    value: "production",
+  },
+  {
+    label: "Invoice",
+    value: "invoice",
+  },
+  {
+    label: "Paid",
+    value: "paid",
+  },
+  {
+    label: "Payout",
+    value: "payout",
+  },
+];
+
 export const pipelineFilter = [
   {
     label: "Semua",
@@ -56,11 +90,8 @@ export const pipelineFilter = [
     label: "Paid",
     value: "paid",
   },
-];
-
-export const deliverableHeader = [
-  "Nama Content",
-  "Jumlah",
-  "Platform",
-  "Tipe Content",
+  {
+    label: "Payout",
+    value: "payout",
+  },
 ];

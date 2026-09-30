@@ -1,5 +1,6 @@
 import {
   DealAnalyticDTO,
+  DealDetailDTO,
   DealDTO,
   DealInput,
 } from "@/interfaces/deal.interface";
@@ -51,6 +52,18 @@ export async function saveDeal(
       ...body,
       email,
     });
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getDealDetail(
+  id: string,
+): Promise<ResType<DealDetailDTO>> {
+  try {
+    const response = await fetchAPI(`/api/deal/${id}`, "GET");
 
     return response;
   } catch (error) {

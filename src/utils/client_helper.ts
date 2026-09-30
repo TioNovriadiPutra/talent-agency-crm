@@ -12,10 +12,14 @@ export function convertNumberToCurrency(val: number): string {
 }
 
 export function formatDate(
-  value: string,
+  value?: string,
   dateFormat: string = "dd MMM yyyy",
 ): string {
-  return format(parseISO(value), dateFormat, { locale: id });
+  if (value && value !== "-") {
+    return format(parseISO(value), dateFormat, { locale: id });
+  }
+
+  return "-";
 }
 
 export async function fetchAPI<T>(

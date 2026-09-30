@@ -65,10 +65,10 @@ function Table({ dataHeader, data, withAction = false, isLoading }: Props) {
                     ) : item2.type === "status" ? (
                       <Flex>
                         <Flex
-                          className={`px-3.5 py-1 self-start ${item2.mode! === "warning" ? "bg-yellow-100" : item2.mode! === "success" ? "bg-green-100" : "bg-red-100"} rounded-full`}
+                          className={`px-3.5 py-1 self-start ${item2.mode! === "warning" ? "bg-yellow-100" : item2.mode! === "success" ? "bg-green-100" : "bg-accent-100"} rounded-full`}
                         >
                           <p
-                            className={`text-body-s font-medium ${item2.mode! === "warning" ? "text-yellow-500" : item2.mode === "success" ? "text-green-500" : "text-red-500"}`}
+                            className={`text-body-s font-medium ${item2.mode! === "warning" ? "text-yellow-600" : item2.mode === "success" ? "text-green-500" : "text-accent-700"}`}
                           >
                             {item2.value}
                           </p>
@@ -83,7 +83,10 @@ function Table({ dataHeader, data, withAction = false, isLoading }: Props) {
                 {withAction && (
                   <td className="border-b border-b-neutral-300 p-4">
                     <Flex className="items-center">
-                      <ButtonFlex className="size-8 justify-center border border-neutral-300 rounded-lg hover:bg-neutral-300 transition-colors duration-300">
+                      <ButtonFlex
+                        className="size-8 justify-center border border-neutral-300 rounded-lg hover:bg-neutral-300 transition-colors duration-300"
+                        onClick={item.action.onClick}
+                      >
                         <ArrowRight size={16} color="var(--neutral-900)" />
                       </ButtonFlex>
                     </Flex>
