@@ -57,6 +57,7 @@ export default async function handler(
       brand_name: brand,
       agency_id: id,
       talent_id: talent,
+      inquiry_budget: Number(gross_value),
     })
     .select("id")
     .single();
@@ -70,26 +71,8 @@ export default async function handler(
     );
   }
 
-  const { error: insertFinancialError } = await supabase
-    .from("deal_financials")
-    .insert({
-      gross_value: Number(gross_value),
-      agreed_talent_share_pct: data.default_share_pct,
-      deal_id: insertDeal.id,
-      agency_id: id,
-    });
-
-  if (insertFinancialError) {
-    return responseError(
-      res,
-      400,
-      "Penyimpanan gagal!|Gagal menyimpan deal.",
-      error,
-    );
-  }
-
   const { error: insertDeliverablesError } = await supabase
-    .from("deliverables")
+    .from("inquiry_items")
     .insert(
       deliverables.map((item: DealDeliverableInput) => ({
         content_name: item.content_name,

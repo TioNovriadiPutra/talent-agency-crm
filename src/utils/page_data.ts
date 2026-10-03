@@ -48,6 +48,10 @@ export const stageData = [
     value: "quotation",
   },
   {
+    label: "Deal",
+    value: "deal",
+  },
+  {
     label: "Produksi",
     value: "production",
   },
@@ -77,6 +81,10 @@ export const pipelineFilter = [
   {
     label: "Quotation",
     value: "quotation",
+  },
+  {
+    label: "Deal",
+    value: "deal",
   },
   {
     label: "Produksi",

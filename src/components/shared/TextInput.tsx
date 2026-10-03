@@ -9,10 +9,18 @@ type Props = {
   label?: string;
   type?: "default" | "password";
   required?: boolean;
+  disabled?: boolean;
   error?: FieldError;
 };
 
-function TextInput({ field, label, type = "default", required, error }: Props) {
+function TextInput({
+  field,
+  label,
+  type = "default",
+  required,
+  disabled,
+  error,
+}: Props) {
   const [showPass, setShowPass] = useState(false);
 
   return (
@@ -29,18 +37,22 @@ function TextInput({ field, label, type = "default", required, error }: Props) {
       )}
 
       <Flex
-        className={`flex-row! items-center px-3 py-[11.5px] border ${error ? "border-red-500" : "border-neutral-400"} rounded-md gap-3.5`}
+        className={`flex-row! items-center px-3 py-[11.5px] border ${error ? "border-red-500" : "border-neutral-400"} rounded-md gap-3.5 ${disabled && "bg-neutral-100"}`}
       >
         <input
           {...field}
           type={type === "password" ? (showPass ? "text" : "password") : "text"}
+          disabled={disabled}
           placeholder={
             label ? `Masukan ${label.toLowerCase()}...` : "Input disini..."
           }
         />
 
         {type === "password" && (
-          <ButtonFlex onClick={() => setShowPass((prev) => !prev)}>
+          <ButtonFlex
+            disabled={disabled}
+            onClick={() => setShowPass((prev) => !prev)}
+          >
             {showPass ? (
               <Eye size={18} color="var(--neutral-600)" />
             ) : (

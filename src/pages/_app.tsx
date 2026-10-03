@@ -1,6 +1,7 @@
 import {
   AuthInitializer,
   Container,
+  GenerateQuotationModal,
   Header,
   Sidebar,
   TalentFormModal,
@@ -47,6 +48,7 @@ export default function App({ Component, pageProps }: AppProps) {
         </Flex>
 
         <TalentFormModal />
+        <GenerateQuotationModal />
       </QueryClientProvider>
     </Container>
   );

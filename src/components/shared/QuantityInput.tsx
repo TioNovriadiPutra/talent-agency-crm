@@ -7,12 +7,13 @@ type Props = {
   field: ControllerRenderProps<any, any>;
   label?: string;
   required?: boolean;
+  disabled?: boolean;
   error?: FieldError;
 };
 
 const numberFormatter = new Intl.NumberFormat("id-ID");
 
-function QuantityInput({ field, label, required, error }: Props) {
+function QuantityInput({ field, label, required, disabled, error }: Props) {
   const onAdd = () => {
     field.onChange(field.value + 1);
   };
@@ -38,20 +39,22 @@ function QuantityInput({ field, label, required, error }: Props) {
 
       <Flex className="flex-row! items-center gap-2.5">
         <ButtonFlex
-          className="size-8 justify-center border border-neutral-400 rounded-md shrink-0"
+          disabled={disabled}
+          className={`size-8 justify-center border border-neutral-400 rounded-md shrink-0 ${disabled && "bg-neutral-100"}`}
           onClick={onMin}
         >
           <Minus size={16} color="var(--neutral-900)" />
         </ButtonFlex>
 
         <Flex
-          className={`min-w-0 flex-1 flex-row! items-center justify-center px-3 py-[11.5px] border ${error ? "border-red-500" : "border-neutral-400"} rounded-md gap-3.5`}
+          className={`min-w-0 flex-1 flex-row! items-center justify-center px-3 py-[11.5px] ${disabled && "bg-neutral-100"} border ${error ? "border-red-500" : "border-neutral-400"} rounded-md gap-3.5`}
         >
           <input
             {...field}
             type="text"
             inputMode="numeric"
             aria-label={label}
+            disabled={disabled}
             value={numberFormatter.format(field.value ?? 0)}
             className="text-center"
             onChange={(event) => {
@@ -66,7 +69,8 @@ function QuantityInput({ field, label, required, error }: Props) {
         </Flex>
 
         <ButtonFlex
-          className="size-8 justify-center border border-neutral-400 rounded-md shrink-0"
+          disabled={disabled}
+          className={`size-8 justify-center border border-neutral-400 rounded-md shrink-0 ${disabled && "bg-neutral-100"}`}
           onClick={onAdd}
         >
           <Add size={16} color="var(--neutral-900)" />

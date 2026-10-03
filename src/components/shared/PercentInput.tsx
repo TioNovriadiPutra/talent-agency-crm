@@ -8,10 +8,11 @@ type Props = {
   field: ControllerRenderProps<any, any>;
   label?: string;
   required?: boolean;
+  disabled?: boolean;
   error?: FieldError;
 };
 
-function PercentInput({ field, label, required, error }: Props) {
+function PercentInput({ field, label, required, disabled, error }: Props) {
   const [inputText, setInputText] = useState<string | null>(null);
 
   return (
@@ -28,7 +29,9 @@ function PercentInput({ field, label, required, error }: Props) {
       <Flex
         className={`flex-row! items-center border ${error ? "border-red-500" : "border-neutral-400"} rounded-md overflow-hidden`}
       >
-        <Flex className="flex-1 px-3 py-[11.5px]">
+        <Flex
+          className={`flex-1 px-3 py-[11.5px] ${disabled && "bg-neutral-100"}`}
+        >
           <input
             {...field}
             type="text"
@@ -36,6 +39,7 @@ function PercentInput({ field, label, required, error }: Props) {
             aria-label={label}
             value={inputText ?? numberFormatter.format(field.value ?? 0)}
             placeholder="0"
+            disabled={disabled}
             onFocus={() => {
               setInputText(String(field.value ?? 0).replace(".", ","));
             }}

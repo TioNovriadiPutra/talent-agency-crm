@@ -1,11 +1,14 @@
 import {
+  ChangeStageInput,
   DealAnalyticDTO,
   DealDetailDTO,
   DealDTO,
   DealInput,
+  GenerateQuotationInput,
 } from "@/interfaces/deal.interface";
 import { MetaResType, ResType } from "@/interfaces/res.interface";
 import { fetchAPI } from "@/utils/client_helper";
+import { QuotationStatus } from "@/utils/enums";
 
 export async function getDealAnalytic(): Promise<ResType<DealAnalyticDTO>> {
   try {
@@ -64,6 +67,70 @@ export async function getDealDetail(
 ): Promise<ResType<DealDetailDTO>> {
   try {
     const response = await fetchAPI(`/api/deal/${id}`, "GET");
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function changeStage(
+  id: string,
+  body: ChangeStageInput,
+): Promise<ResType> {
+  try {
+    const response = await fetchAPI(
+      `/api/deal/stage/quotation/${id}`,
+      "PUT",
+      body,
+    );
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function generateQuotation(
+  id: string,
+  body: GenerateQuotationInput,
+): Promise<ResType<{ deal_id: string }>> {
+  try {
+    const response = await fetchAPI(
+      `/api/deal/stage/quotation/generate/${id}`,
+      "POST",
+      body,
+    );
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function updateQuotationStatus(
+  id: string,
+  body: { status: QuotationStatus },
+): Promise<ResType<{ deal_id: string }>> {
+  try {
+    const response = fetchAPI(
+      `/api/deal/stage/quotation/status/${id}`,
+      "PUT",
+      body,
+    );
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function changeStageToDeal(
+  id: string,
+  body: { talent_share_pct: number },
+): Promise<ResType> {
+  try {
+    const response = await fetchAPI(`/api/deal/stage/deal/${id}`, "PUT", body);
 
     return response;
   } catch (error) {

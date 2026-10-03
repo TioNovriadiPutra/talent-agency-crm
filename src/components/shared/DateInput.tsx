@@ -23,6 +23,7 @@ type Props = {
   label?: string;
   required?: boolean;
   mode?: "single" | "range";
+  disabled?: boolean;
   error?: FieldError;
 };
 
@@ -31,6 +32,7 @@ const DateInput = ({
   label,
   required,
   mode = "single",
+  disabled,
   error,
 }: Props) => {
   const [open, setOpen] = useState(false);
@@ -77,7 +79,7 @@ const DateInput = ({
           trigger.current = element;
           field.ref(element);
         }}
-        disabled={field.disabled}
+        disabled={disabled}
         aria-label={label || "Pilih tanggal"}
         aria-haspopup="dialog"
         aria-expanded={open}
@@ -86,7 +88,7 @@ const DateInput = ({
         onBlur={() => {
           if (!open) field.onBlur();
         }}
-        className={`flex cursor-pointer items-center px-3 py-[11.5px] border ${error ? "border-red-500" : "border-neutral-400"} rounded-md gap-3.5 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50`}
+        className={`flex cursor-pointer items-center px-3 py-[11.5px] ${disabled && "bg-neutral-100"} border ${error ? "border-red-500" : "border-neutral-400"} rounded-md gap-3.5 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed`}
       >
         <span
           className={`flex-1 text-body-s font-normal ${field.value ? "text-neutral-900" : "text-neutral-500"} text-left`}

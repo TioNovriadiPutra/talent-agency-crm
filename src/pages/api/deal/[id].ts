@@ -21,7 +21,7 @@ export default async function handler(
   const { data, error } = await supabase
     .from("deals")
     .select(
-      "id, stage, talent:talents ( talent_name ), deal_value:deal_financials ( gross_value ), target_date, sow:deliverables ( content_name, quantity )",
+      "id, stage, talent:talents ( talent_name, default_share_pct ), inquiry_budget, target_date, inquiry_sow:inquiry_items ( content_name, quantity ), quotation:quotations ( id, document_number, version_number, proposed_value, tax_pct, status, generated_at, document_path, quotation_sow:quotation_items ( id, content_name, quantity, due_date ) ), deal_sow:deliverables ( id, content_name, quantity, due_date )",
     )
     .eq("id", id)
     .single();

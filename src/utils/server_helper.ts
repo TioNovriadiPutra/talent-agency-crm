@@ -1,4 +1,5 @@
 import { NextApiResponse } from "next";
+import puppeteer from "puppeteer";
 
 export function methodNotAllowedError(res: NextApiResponse) {
   return res.status(405).json({
@@ -48,4 +49,25 @@ export function fetchSuccess(res: NextApiResponse, label: string, data: any) {
     message: `Data diambil!|Data ${label} berhasil diambil.`,
     data,
   });
+}
+
+export async function generatePDF(html: string): Promise<Uint8Array> {
+  let pdfBytes: Uint8Array;
+  const browser = await puppeteer.launch();
+
+  try {
+    const page = await browser.newPage();
+
+    await page.setContent(html, { waitUntil: "load" });
+
+    pdfBytes = await page.pdf({
+      format: "A4",
+      printBackground: true,
+      preferCSSPageSize: true,
+    });
+  } finally {
+    await browser.close();
+  }
+
+  return pdfBytes;
 }

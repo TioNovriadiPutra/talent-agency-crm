@@ -1,19 +1,26 @@
 import {
+  ChangeStageInput,
   DealAnalyticDTO,
   DealDetailDTO,
   DealInput,
+  GenerateQuotationInput,
 } from "@/interfaces/deal.interface";
 import { TablePaginationType, TableType } from "@/interfaces/page.interface";
 import {
+  changeStage,
+  changeStageToDeal,
+  generateQuotation,
   getDealAnalytic,
   getDealDetail,
   getDeals,
   getLatestDeals,
   saveDeal,
+  updateQuotationStatus,
 } from "@/services/deal.service";
+import { generateQuotationModalActions } from "@/stores/modal.store";
 import { authStore, loadingActions, toastActions } from "@/stores/page.store";
 import { convertNumberToCurrency, formatDate } from "@/utils/client_helper";
-import { DealStatus } from "@/utils/enums";
+import { DealStatus, QuotationStatus } from "@/utils/enums";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "@tanstack/react-store";
 import { useRouter } from "next/router";
@@ -29,6 +36,10 @@ const dealStatusMode: Record<
   [DealStatus.quotation]: {
     label: "Quotation",
     color: "danger",
+  },
+  [DealStatus.deal]: {
+    label: "Deal",
+    color: "success",
   },
   [DealStatus.production]: {
     label: "Produksi",
@@ -237,14 +248,29 @@ function useDealController() {
     });
 
     let finalData: DealDetailDTO = {
-      id: "-",
+      id: "",
       stage: DealStatus["inquiry"],
       talent: {
         talent_name: "-",
+        default_share_pct: 0,
       },
-      deal_value: [],
+      inquiry_budget: 0,
       target_date: "-",
-      sow: [],
+      inquiry_sow: [],
+      quotation: [
+        {
+          id: "",
+          proposed_value: 0,
+          tax_pct: 0,
+          status: null,
+          generated_at: null,
+          document_path: "",
+          version_number: null,
+          document_number: "",
+          quotation_sow: [],
+        },
+      ],
+      deal_sow: [],
     };
 
     if (!isLoading) {
@@ -261,12 +287,87 @@ function useDealController() {
     };
   };
 
+  const changeStageMutation = useMutation({
+    mutationKey: ["changeStage"],
+    mutationFn: (data: { id: string; body: ChangeStageInput }) =>
+      changeStage(data.id, data.body),
+    onMutate: loadingActions.showLoading,
+    onSettled: loadingActions.hideLoading,
+    onSuccess: (response, variables) => {
+      toastActions.showToast("success", response.message);
+      queryClient.invalidateQueries({
+        queryKey: ["getDealDetail", variables.id],
+      });
+    },
+    onError: (error) => toastActions.showToast("failed", error.message),
+  });
+
+  const generateQuotationMutation = useMutation({
+    mutationKey: ["generateQuotation"],
+    mutationFn: (data: { id: string; body: GenerateQuotationInput }) =>
+      generateQuotation(data.id, data.body),
+    onMutate: loadingActions.showLoading,
+    onSettled: loadingActions.hideLoading,
+    onSuccess: (response) => {
+      generateQuotationModalActions.closeModal();
+      toastActions.showToast("success", response.message);
+      queryClient.invalidateQueries({
+        queryKey: ["getDealDetail", response.data.deal_id],
+      });
+    },
+    onError: (error) => toastActions.showToast("failed", error.message),
+  });
+
+  const updateQuotationStatusMutation = useMutation({
+    mutationKey: ["updateQuotationStatus"],
+    mutationFn: (data: { id: string; body: { status: QuotationStatus } }) =>
+      updateQuotationStatus(data.id, data.body),
+    onMutate: loadingActions.showLoading,
+    onSettled: loadingActions.hideLoading,
+    onSuccess: (response) => {
+      toastActions.showToast("success", response.message);
+      queryClient.invalidateQueries({
+        queryKey: ["getDealDetail", response.data.deal_id],
+      });
+    },
+    onError: (error) => toastActions.showToast("failed", error.message),
+  });
+
+  const changeStageToDealMutation = useMutation({
+    mutationKey: ["changeStateToDeal"],
+    mutationFn: (data: { id: string; body: { talent_share_pct: number } }) =>
+      changeStageToDeal(data.id, data.body),
+    onMutate: loadingActions.showLoading,
+    onSettled: loadingActions.hideLoading,
+    onSuccess: (response, variables) => {
+      toastActions.showToast("success", response.message);
+      queryClient.invalidateQueries({
+        queryKey: ["getDealDetail", variables.id],
+      });
+    },
+    onError: (error) => toastActions.showToast("failed", error.message),
+  });
+
   return {
     useGetDealAnalyticService,
     useGetLatestDealsService,
     useGetDealsService,
     saveDealService: (body: any) => saveDealMutation.mutate(body),
     useGetDealDetailService,
+    changeStageService: (data: { id: string; body: any }) =>
+      changeStageMutation.mutate(data),
+    generateQuotationService: (data: {
+      id: string;
+      body: GenerateQuotationInput;
+    }) => generateQuotationMutation.mutate(data),
+    updateQuotationStatusService: (data: {
+      id: string;
+      body: { status: QuotationStatus };
+    }) => updateQuotationStatusMutation.mutate(data),
+    changeStageToDealService: (data: {
+      id: string;
+      body: { talent_share_pct: number };
+    }) => changeStageToDealMutation.mutate(data),
   };
 }
 

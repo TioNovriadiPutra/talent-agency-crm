@@ -12,6 +12,7 @@ type Props<T extends FieldValues, TName extends FieldPath<T>> = {
   field: ControllerRenderProps<T, TName>;
   label: string;
   required?: boolean;
+  disabled?: boolean;
   error?: FieldError;
 };
 
@@ -19,6 +20,7 @@ function CurrencyInput<T extends FieldValues, TName extends FieldPath<T>>({
   field,
   label,
   required,
+  disabled,
   error,
 }: Props<T, TName>) {
   return (
@@ -39,13 +41,16 @@ function CurrencyInput<T extends FieldValues, TName extends FieldPath<T>>({
           <p className="text-body-s text-neutral-600">Rp</p>
         </Flex>
 
-        <Flex className="flex-1 px-3 py-[11.5px]">
+        <Flex
+          className={`flex-1 px-3 py-[11.5px] ${disabled && "bg-neutral-100"}`}
+        >
           <input
             {...field}
             type="text"
             inputMode="numeric"
             aria-label={label}
             value={numberFormatter.format(field.value ?? 0)}
+            disabled={disabled}
             onChange={(event) => {
               const digits = event.target.value.replace(/\D/g, "");
               const value = Number(digits);
